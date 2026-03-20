@@ -1,0 +1,35 @@
+# Node
+node_modules/
+package-lock.json
+yarn.lock
+
+# Env
+.env
+.env.*
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+crash.log
+override.tf
+override.tf.json
+*.tfvars
+
+# Misc
+coverage/
+dist/
+build/
