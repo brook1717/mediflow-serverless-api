@@ -1,16 +1,21 @@
+const { createItem } = require("../services/itemService");
+
 exports.handler = async (event) => {
   try {
+    const body = JSON.parse(event.body || "{}");
+
+    const item = await createItem(body);
+
     return {
-      statusCode: 200,
-      body: JSON.stringify({
-        message: "createItem handler placeholder",
-      }),
+      statusCode: 201,
+      body: JSON.stringify(item),
     };
   } catch (error) {
+    console.error("createItem error:", error);
     return {
       statusCode: 500,
       body: JSON.stringify({
-        error: "Internal Server Error",
+        error: "Failed to create item",
       }),
     };
   }
