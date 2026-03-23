@@ -12,3 +12,9 @@ terraform {
 provider "aws" {
   region = var.aws_region
 }
+
+//db
+module "dynamodb" {
+  source     = "./modules/dynamodb"
+  table_name = "mediflow-items"
+}
