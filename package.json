@@ -2,6 +2,16 @@
   "name": "mediflow-serverless-api",
   "version": "1.0.0",
   "scripts": {
-    "test": "node tests/itemService.test.js"
+    "test": "jest"
+  },
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.1015.0",
+    "@aws-sdk/lib-dynamodb": "^3.1015.0",
+    "jsonwebtoken": "^9.0.3",
+    "jwks-rsa": "^4.0.1",
+    "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "jest": "^30.3.0"
   }
 }
