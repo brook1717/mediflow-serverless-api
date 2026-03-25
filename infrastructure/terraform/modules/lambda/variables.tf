@@ -4,6 +4,6 @@ variable "mediflow-bucket" {
 }
 
 variable "mediflow-bucket-arn" {
-  description = "S3 bucket name"
+  description = "bucket resource name"
   type        = string
 }
