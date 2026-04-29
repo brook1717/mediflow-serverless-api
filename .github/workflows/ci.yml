@@ -6,7 +6,8 @@ on:
   pull_request:
 
 jobs:
-  build:
+  test:
+    name: Node.js Tests
     runs-on: ubuntu-latest
 
     steps:
@@ -19,22 +20,30 @@ jobs:
           node-version: 18
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
       - name: Run tests
         run: npm test
 
+  terraform:
+    name: Terraform Format & Validate
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
 
-      - name: Terraform Init
-        run: terraform init
+      - name: Terraform Format Check
+        run: terraform fmt -check -recursive
+        working-directory: infrastructure/terraform
+
+      - name: Terraform Init (no backend)
+        run: terraform init -backend=false
         working-directory: infrastructure/terraform
 
       - name: Terraform Validate
         run: terraform validate
-        working-directory: infrastructure/terraform
-
-      - name: Terraform Format Check
-        run: terraform fmt -check
         working-directory: infrastructure/terraform
