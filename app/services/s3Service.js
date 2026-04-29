@@ -1,5 +1,10 @@
 const AWSXRay = require("aws-xray-sdk-core");
-const { S3Client, PutObjectCommand } = require("@aws-sdk/client-s3");
+const {
+  S3Client,
+  PutObjectCommand,
+  CopyObjectCommand,
+  DeleteObjectCommand,
+} = require("@aws-sdk/client-s3");
 const { getSignedUrl } = require("@aws-sdk/s3-request-presigner");
 
 AWSXRay.setContextMissingStrategy("LOG_ERROR");
@@ -25,6 +30,24 @@ const getUploadUrl = async (key) => {
   return url;
 };
 
+const moveObject = async (sourceBucket, sourceKey, destinationKey) => {
+  await s3.send(
+    new CopyObjectCommand({
+      Bucket: sourceBucket,
+      CopySource: `${sourceBucket}/${sourceKey}`,
+      Key: destinationKey,
+    })
+  );
+
+  await s3.send(
+    new DeleteObjectCommand({
+      Bucket: sourceBucket,
+      Key: sourceKey,
+    })
+  );
+};
+
 module.exports = {
   getUploadUrl,
+  moveObject,
 };

@@ -30,7 +30,9 @@ resource "aws_iam_policy" "lambda_policy" {
       {
         Action = [
           "s3:PutObject",
-          "s3:GetObject"
+          "s3:GetObject",
+          "s3:CopyObject",
+          "s3:DeleteObject"
         ]
         Effect   = "Allow"
         Resource = "*"
@@ -48,6 +50,13 @@ resource "aws_iam_policy" "lambda_policy" {
         Action = [
           "xray:PutTraceSegments",
           "xray:PutTelemetryRecords"
+        ]
+        Effect   = "Allow"
+        Resource = "*"
+      },
+      {
+        Action = [
+          "sqs:SendMessage"
         ]
         Effect   = "Allow"
         Resource = "*"
