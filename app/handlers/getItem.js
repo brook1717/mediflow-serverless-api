@@ -1,41 +1,30 @@
 const { getItem } = require("../services/itemService");
-const { withAuth } = require("../utils/middleware");
+const { withMiddleware } = require("../utils/middleware");
 const logger = require("../utils/logger");
 
 const handler = async (event) => {
-  try {
-    const id = event.pathParameters?.id;
+  const id = event.pathParameters?.id;
 
-    if (!id) {
-      return {
-        statusCode: 400,
-        body: JSON.stringify({ error: "Missing item id" }),
-      };
-    }
-
-    logger.info("Fetching item", { id, user: event.user });
-
-    const item = await getItem(id);
-
-    if (!item) {
-      return {
-        statusCode: 404,
-        body: JSON.stringify({ error: "Item not found" }),
-      };
-    }
-
-    return {
-      statusCode: 200,
-      body: JSON.stringify(item),
-    };
-  } catch (error) {
-    logger.error("getItem failed", { error });
-
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ error: "Failed to get item" }),
-    };
+  if (!id) {
+    const error = new Error("Missing item id");
+    error.statusCode = 400;
+    throw error;
   }
+
+  logger.info("Fetching item", { id, user: event.user });
+
+  const item = await getItem(id);
+
+  if (!item) {
+    const error = new Error("Item not found");
+    error.statusCode = 404;
+    throw error;
+  }
+
+  return {
+    statusCode: 200,
+    body: JSON.stringify(item),
+  };
 };
 
-exports.handler = withAuth(handler);
+exports.handler = withMiddleware(handler, { auth: true });

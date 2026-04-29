@@ -5,12 +5,10 @@ jest.mock("../app/services/dynamodbClient", () => ({
   send: jest.fn().mockResolvedValue({}),
 }));
 
-(async () => {
-  console.log("Running S3 event test...");
+describe("S3 Upload Processing", () => {
+  test("should process an uploaded file successfully", async () => {
+    const event = require("../events/s3-put.json");
 
-  const event = require("../events/s3-put.json");
-
-  await handler(event);
-
-  console.log("S3 event processed successfully");
-})();
+    await expect(handler(event)).resolves.not.toThrow();
+  });
+});
